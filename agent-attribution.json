@@ -1,0 +1,110 @@
+{
+  "schema": 1,
+  "agents": {
+    "hermes": {
+      "name": "Hermes Agent",
+      "email": "agent@maysanlabs.com"
+    },
+    "antigravity": {
+      "name": "Antigravity (Maysan)",
+      "email": "antigravity@maysanlabs.com"
+    },
+    "paperclip": {
+      "name": "Paperclip Agent",
+      "email": "paperclip@maysanlabs.com"
+    },
+    "claude-code": {
+      "name": "Claude Code",
+      "email": "claude@maysanlabs.com"
+    },
+    "codex": {
+      "name": "Codex",
+      "email": "codex@maysanlabs.com"
+    }
+  },
+  "agent_identities": [
+    {
+      "name": "Hermes Agent",
+      "email": "agent@maysanlabs.com"
+    },
+    {
+      "name": "Hermes (Agent)",
+      "email": "agent@maysanlabs.com"
+    },
+    {
+      "name": "Hermes",
+      "email": "hermes@maysanlabs.com"
+    },
+    {
+      "name": "Hermes (Maysan Labs)",
+      "email": "hermes@maysanlabs.com"
+    },
+    {
+      "name": "Hermes Agent",
+      "email": "hermes@maysanlabs.com"
+    },
+    {
+      "name": "hermes",
+      "email": "ops@maysanlabs.com"
+    },
+    {
+      "name": "Hermes",
+      "email": "ops@maysanlabs.com"
+    },
+    {
+      "name": "Ops Analyst",
+      "email": "ops@maysanlabs.com"
+    },
+    {
+      "name": "Antigravity (Maysan)",
+      "email": "sanjay@maysanlabs.com"
+    }
+  ],
+  "agent_name_patterns": [
+    "\\bhermes\\b",
+    "\\bantigravity\\b",
+    "\\bpaperclip\\b",
+    "\\bclaude code\\b",
+    "\\bcodex\\b",
+    "\\bcursor\\b",
+    "\\bdevin\\b",
+    "\\bops analyst\\b"
+  ],
+  "exempt_emails": [
+    "rjsanjaymandal@gmail.com",
+    "sanjay@maysanlabs.com",
+    "business@maysanlabs.com",
+    "dev@maysanlabs.com",
+    "hello@maysanlabs.com",
+    "ops@maysanlabs.com"
+  ],
+  "exempt_email_patterns": [
+    "(?i)dependabot",
+    "\\[bot\\]@users\\.noreply\\.github\\.com"
+  ],
+  "humans": [
+    {
+      "name": "Sanjay Mandal",
+      "email": "sanjay@maysanlabs.com"
+    },
+    {
+      "name": "sanjay mandal",
+      "email": "rjsanjaymandal@gmail.com"
+    },
+    {
+      "name": "rjsanjaymandal",
+      "email": "rjsanjaymandal@gmail.com"
+    }
+  ],
+  "required_trailers": [
+    "Agent",
+    "Model"
+  ],
+  "known_agents": [
+    "hermes",
+    "antigravity",
+    "paperclip",
+    "claude-code",
+    "codex"
+  ]
+}

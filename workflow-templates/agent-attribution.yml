@@ -1,0 +1,16 @@
+# Caller for the reusable agent-attribution check.
+#
+# Resolve the labels of this repository's box runner first:
+#   gh api repos/maysan-labs/<repo>/actions/runners --jq '.runners[0].labels[].name'
+# then set runs_on to that JSON list.
+name: agent-attribution
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  attribution:
+    uses: maysan-labs/.github/.github/workflows/agent-attribution.yml@master
+    with:
+      runs_on: '["self-hosted","linux"]'

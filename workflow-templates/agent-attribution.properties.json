@@ -1,0 +1,6 @@
+{
+  "name": "Agent attribution",
+  "description": "Fails a pull request whose agent commits do not carry the Agent: and Model: trailers.",
+  "iconName": "check-circle",
+  "categories": ["Continuous integration"]
+}
