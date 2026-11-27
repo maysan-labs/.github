@@ -1,0 +1,81 @@
+# agent-attribution — reusable check for the trailers every agent commit must carry.
+#
+# See AGENT-ATTRIBUTION.md in this repository for the standard.
+#
+# A repository opts in with a caller workflow:
+#
+#   name: agent-attribution
+#   on: [pull_request, workflow_dispatch]
+#   jobs:
+#     attribution:
+#       uses: maysan-labs/.github/.github/workflows/agent-attribution.yml@master
+#       with:
+#         runs_on: '["self-hosted","linux","aapna"]'
+#
+# GitHub-hosted runners are refused on this org (billing), so `runs_on` is a JSON
+# array of labels for the repository's own box runner. A run sitting in "Queued"
+# means no machine picked the job up; that is not a pass.
+name: agent-attribution
+
+on:
+  workflow_call:
+    inputs:
+      runs_on:
+        description: 'JSON array of runner labels, e.g. ["self-hosted","linux","aapna"]'
+        type: string
+        default: '["self-hosted","linux"]'
+      strict:
+        description: 'Fail on identity drift as well as on missing trailers'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: agent-attribution-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  attribution:
+    runs-on: ${{ fromJSON(inputs.runs_on) }}
+    steps:
+      - name: Check out the branch under test
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch the standard and the checker
+        uses: actions/checkout@v4
+        with:
+          repository: maysan-labs/.github
+          path: .org-tools
+          sparse-checkout: |
+            scripts
+            agent-attribution.json
+            AGENT-ATTRIBUTION.md
+
+      - name: Check agent attribution
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          BEFORE: ${{ github.event.before }}
+          STRICT: ${{ inputs.strict }}
+        run: |
+          set -euo pipefail
+          args=(--config .org-tools/agent-attribution.json)
+          if [ "${STRICT}" = "true" ]; then
+            args+=(--strict)
+          fi
+          if [ -n "${PR_NUMBER:-}" ]; then
+            echo "checking the commits of pull request #${PR_NUMBER}"
+            python3 .org-tools/scripts/attribution_check.py "${args[@]}" \
+              --repo "${GITHUB_REPOSITORY}" --pr "${PR_NUMBER}"
+          elif [ -n "${BEFORE:-}" ] && [ "${BEFORE}" != "0000000000000000000000000000000000000000" ]; then
+            echo "checking ${BEFORE}..${GITHUB_SHA}"
+            python3 .org-tools/scripts/attribution_check.py "${args[@]}" \
+              --range "${BEFORE}..${GITHUB_SHA}"
+          else
+            echo "no pull request and no usable push range (new branch): nothing to check"
+          fi
